@@ -1,4 +1,4 @@
-package com.trovimap.api.dao
+package com.project.api.dao
 
 import scala.Left
 import scala.Right
@@ -41,7 +41,7 @@ class ESExample extends Configuration {
           termQuery("_id", propertyId)
         } size 1
       }.await
-      /* Extract the property from the esult. */
+      /* Extract the property from the esResult. */
       val resultProperty = esResult.getHits.getHits.map(f => f.sourceAsString.parseJson.asJsObject)
       /* If the result is not empty - return the property. else - manage error */
       resultProperty.length match {

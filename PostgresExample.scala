@@ -1,4 +1,4 @@
-package com.trovimap.api.dao
+package com.project.api.dao
 
 import java.sql.DriverManager
 
@@ -32,7 +32,7 @@ class PostgresExample extends Configuration {
    * (
    * For example: get top 10 neighborhoods nearest the location we supplied. 
    * the call to the function will be:
-   * 	getNearest(<location latitude>, <location longitude>, "IL", "Neighborhood")
+   * 	getNearestLocations(<location latitude>, <location longitude>, "IL", "Neighborhood")
    * the sql query in the function will be:
    * 	"select Neighborhood from ilNeighborhood ORDER BY geom <-> st_setsrid(st_makepoint(<Double>,<Double>),4326) LIMIT 10;"
    * ) 
@@ -41,7 +41,7 @@ class PostgresExample extends Configuration {
    * @return on success: Right object of JsObject contains the query results.
    * 		 on failure: Left object of Failure contains the error message.
    */
-  def getNearest(lat: Double, lon: Double, country: String, locationType: String): Either[Failure, JsObject] = {
+  def getNearestLocations(lat: Double, lon: Double, country: String, locationType: String): Either[Failure, JsObject] = {
     try {
       /* Connect to postgres */
       val db = connectToPostgresql()
