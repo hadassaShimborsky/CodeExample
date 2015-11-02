@@ -32,16 +32,16 @@ class PostgresExample extends Configuration {
    * (
    * For example: get top 10 neighborhoods nearest the location we supplied. 
    * the call to the function will be:
-   * 	getNearestLocations(<location latitude>, <location longitude>, "IL", "Neighborhood")
+   * 	getNearestLocations(<location latitude>, <location longitude>, "IL", "Neighborhood",10)
    * the sql query in the function will be:
    * 	"select Neighborhood from ilNeighborhood ORDER BY geom <-> st_setsrid(st_makepoint(<Double>,<Double>),4326) LIMIT 10;"
    * ) 
    *
-   * @param lat: Double, lon: Double, country: String, locationType: String
+   * @param lat: Double, lon: Double, country: String, locationType: String, limit: Int
    * @return on success: Right object of JsObject contains the query results.
    * 		 on failure: Left object of Failure contains the error message.
    */
-  def getNearestLocations(lat: Double, lon: Double, country: String, locationType: String): Either[Failure, JsObject] = {
+  def getNearestLocations(lat: Double, lon: Double, country: String, locationType: String, limit: Int): Either[Failure, JsObject] = {
     try {
       /* Connect to postgres */
       val db = connectToPostgresql()
@@ -53,7 +53,7 @@ class PostgresExample extends Configuration {
       val sql = s"""select $locationType
 			      FROM $table 
 			      ORDER BY geom <-> st_setsrid(st_makepoint($lon,$lat),4326) 
-			      LIMIT 10;"""
+			      LIMIT $limit;"""
       val resultSet = statement.executeQuery(sql)
       /* read the result into resultArr */
       while (resultSet.next()) {
